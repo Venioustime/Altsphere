@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #1b0e16, rgba(27, 14, 22, 0.7)), url("channels4_banner.jpg");
+    background-size: cover;
+    background-position: center 50%;
+    background-blend-mode: overlay;
+    text-align: center;
+    color: white;
+}
+
+
+.image-section {
+    height: 200px;
+    margin: 0;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+#site-title, nav a, #content h2, #content p, footer p {
+    color: white; /* Couleur du texte en blanc */
+}
+
+ul {
+  padding-left: 200px; /* Vous pouvez ajuster la valeur de la marge selon vos besoins */
+}
+
+.video-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.video-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Ajustez la marge selon vos besoins */
+	margin-left: 60px;
+}
+
+.video-thumbnail {
+    margin-right: 10px; /* Ajustez la marge entre l'image et le texte selon vos besoins */
+	height: 100px; /* Ajustez la hauteur de l'image selon vos besoins */
+    width: auto; /* Conserve le ratio de l'image */
+	position: relative;
+}
+
+.video-name {
+    color: white; /* Couleur du texte en blanc */
+}
+
+.video-details {
+    display: inline-block;
+    position: relative;
+}
+
+/* Nouvelle classe ajoutée pour l'encadré des détails */
+.video-details-box {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Style pour la section de transcription */
+.transcription {
+    color: white;
+    padding: 20px;
+}
+
+/* Style pour la table des images de la vidéo */
+.image-table {
+    color: white;
+    padding: 20px;
+}
+
+.image-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.image-table th, .image-table td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+}
+
+.image-table th {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.info-table {
+    position: absolute;
+    top: 120px; /* Place le tableau en dessous de la vidéo avec un espacement de 50px */
+    left: 0; /* Aligne le tableau à gauche de la vidéo */
+    margin-top: 10px; /* Ajoute un espacement entre la vidéo et le tableau */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-collapse: collapse; /* Fusionne les bordures des cellules */
+}
+
+.info {
+    margin-top: 120px; /* Ajoute une marge en haut pour séparer le texte de l'image */
+}
