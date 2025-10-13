@@ -1,10 +1,22 @@
 import os
 
-# Fonction pour formater le nom du fichier en "xxminxxs"
+# Fonction pour formater le nom du fichier en "xxminxxs" ou "xxhxxminxxs"
 def format_time(file_name):
     name_without_extension = os.path.splitext(file_name)[0]  # Retirer l'extension
-    minutes, seconds = name_without_extension.split('_')  # Séparer les minutes et secondes
-    return f"{minutes}min{seconds}s"
+    
+    # Gestion spéciale pour le fichier "cover"
+    if name_without_extension == "cover":
+        return "cover"
+    
+    parts = name_without_extension.split('_')  # Séparer les parties
+    if len(parts) == 2:
+        minutes, seconds = parts
+        return f"{minutes}min{seconds}s"
+    elif len(parts) == 3:
+        hours, minutes, seconds = parts
+        return f"{hours}h{minutes}min{seconds}s"
+    else:
+        return name_without_extension
 
 # Fonction pour lister les images et générer les lignes HTML dans un fichier texte
 def generate_image_list_txt(directory_path, output_file):
@@ -13,7 +25,12 @@ def generate_image_list_txt(directory_path, output_file):
     # Ouvrir le fichier de sortie en mode écriture
     with open(output_file, 'w', encoding='utf-8') as f:
         # Lister tous les fichiers dans le répertoire donné
-        for file_name in os.listdir(directory_path):
+        files = os.listdir(directory_path)
+        
+        # Trier les fichiers : 'cover' en premier, puis les autres
+        files.sort(key=lambda x: (x != 'cover', x))
+        
+        for file_name in files:
             # Vérifier si le fichier a une extension d'image
             if any(file_name.endswith(ext) for ext in image_extensions):
                 formatted_time = format_time(file_name)
@@ -34,7 +51,7 @@ def generate_image_list_txt(directory_path, output_file):
                 f.write(line + "\n")
 
 # Exemple d'utilisation
-directory = './images/sources/all_seeing_eye_video'  # Chemin vers le dossier d'images
+directory = './images/sources/what_is_alt236_faq'  # Chemin vers le dossier d'images
 output_file = 'output_table.txt'  # Fichier texte de sortie
 
 # Appeler la fonction pour générer le fichier texte
