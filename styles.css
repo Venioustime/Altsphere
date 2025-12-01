@@ -6,8 +6,8 @@ body {
     background-size: cover;
     background-position: center 50%;
     background-blend-mode: overlay;
-    background-attachment: fixed; /* Nouveau */
-    background-repeat: no-repeat; /* Nouveau */
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     text-align: center;
     color: white;
 }
@@ -51,11 +51,11 @@ a {
 }
 
 #site-title, nav a, #content h2, #content p, footer p {
-    color: white; /* Couleur du texte en blanc */
+    color: white;
 }
 
 ul {
-  padding-left: 200px; /* Vous pouvez ajuster la valeur de la marge selon vos besoins */
+    padding-left: 200px;
 }
 
 .video-list {
@@ -66,19 +66,19 @@ ul {
 .video-list li {
     display: flex;
     align-items: center;
-    margin-bottom: 10px; /* Ajustez la marge selon vos besoins */
-	margin-left: 60px;
+    margin-bottom: 10px;
+    margin-left: 60px;
 }
 
 .video-thumbnail {
-    margin-right: 10px; /* Ajustez la marge entre l'image et le texte selon vos besoins */
-	height: 100px; /* Ajustez la hauteur de l'image selon vos besoins */
-    width: auto; /* Conserve le ratio de l'image */
-	position: relative;
+    margin-right: 10px;
+    height: 100px;
+    width: auto;
+    position: relative;
 }
 
 .video-name {
-    color: white; /* Couleur du texte en blanc */
+    color: white;
 }
 
 .video-details {
@@ -125,16 +125,16 @@ ul {
 
 .info-table {
     position: absolute;
-    top: 120px; /* Place le tableau en dessous de la vidéo avec un espacement de 50px */
-    left: 0; /* Aligne le tableau à gauche de la vidéo */
-    margin-top: 10px; /* Ajoute un espacement entre la vidéo et le tableau */
+    top: 120px;
+    left: 0;
+    margin-top: 10px;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    border-collapse: collapse; /* Fusionne les bordures des cellules */
+    border-collapse: collapse;
 }
 
 .info {
-    margin-top: 120px; /* Ajoute une marge en haut pour séparer le texte de l'image */
+    margin-top: 120px;
 }
 
 /* Style de base pour les volets */
@@ -142,19 +142,19 @@ ul {
     margin-bottom: 15px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
 }
 
 .image-volet:hover {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-/* En-tête du volet - Personnalisez les couleurs */
+/* En-tête du volet */
 .volet-header {
     width: 100%;
     padding: 18px 25px;
-    background: linear-gradient(135deg, #4a6fa5, #3a5985); /* Couleur bleue */
+    background: linear-gradient(135deg, #4a6fa5, #3a5985);
     color: white;
     border: none;
     text-align: left;
@@ -199,45 +199,68 @@ ul {
     background: linear-gradient(135deg, #3a5985, #2a4765);
 }
 
-/* Contenu du volet */
+/* CONTENU DU VOLET - TRANSPARENT */
 .volet-content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.6s ease;
-    background-color: #f8fafc;
+    /* FOND TRANSPARENT */
+    background-color: transparent !important;
+    border: none;
 }
 
+/* TABLEAU TRANSPARENT */
 .volet-content table {
     width: 100%;
     border-collapse: collapse;
     margin: 0;
+    /* FOND TRANSPARENT */
+    background-color: transparent !important;
 }
 
 .volet-content th {
-    background-color: #e8f0fe;
     padding: 15px;
     text-align: left;
-    border-bottom: 2px solid #d0d7e7;
-    color: #2d3748;
+    /* Bordure légère pour visibilité */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    /* FOND TRANSPARENT */
+    background-color: transparent !important;
+    color: white; /* Texte en blanc pour contraste */
+    font-weight: 600;
 }
 
 .volet-content td {
     padding: 15px;
-    border-bottom: 1px solid #e2e8f0;
+    /* Bordure légère entre les lignes */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     vertical-align: top;
+    /* FOND TRANSPARENT */
+    background-color: transparent !important;
+    color: white; /* Texte en blanc */
 }
 
+/* Alternance de lignes très subtile pour lisibilité */
+.volet-content tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.volet-content tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    transition: background-color 0.2s ease;
+}
+
+/* Images dans les volets */
 .volet-content img {
     max-width: 180px;
     height: auto;
     border-radius: 6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .volet-content img:hover {
     transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 /* Style optionnel pour des couleurs différentes par volet */
@@ -251,4 +274,215 @@ ul {
 
 .image-volet:nth-child(3n) .volet-header {
     background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+/* Adaptation pour les écrans plus petits */
+@media (max-width: 768px) {
+    ul {
+        padding-left: 20px;
+    }
+    
+    .video-list li {
+        margin-left: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .video-thumbnail {
+        margin-right: 0;
+        margin-bottom: 10px;
+        height: auto;
+        max-width: 100%;
+    }
+    
+    .volet-header {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+    
+    .volet-title {
+        font-size: 1em;
+    }
+    
+    .volet-count {
+        margin: 0 10px;
+        font-size: 0.8em;
+    }
+    
+    .volet-content th,
+    .volet-content td {
+        padding: 10px 5px;
+        font-size: 0.9em;
+    }
+    
+    .volet-content img {
+        max-width: 120px;
+    }
+}
+
+/* Animation pour le chargement des images */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.volet-content table tbody tr {
+    animation: fadeIn 0.3s ease forwards;
+    opacity: 0;
+}
+
+.volet-content table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.volet-content table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.volet-content table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.volet-content table tbody tr:nth-child(4) { animation-delay: 0.2s; }
+.volet-content table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+/* Style pour le tableau source caché */
+#all-images-source {
+    display: none;
+}
+
+/* Amélioration de la visibilité des bordures pour les tableaux dans le contenu principal */
+.image-table table {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.image-table th {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.image-table td {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton Retour en haut */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none; /* Caché par défaut */
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.back-to-top.visible {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a4190);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-top:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation d'apparition */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.back-to-top.visible {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+/* Bouton Retour à la page précédente */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4a6fa5, #3a5985);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 9999; /* Très important : au-dessus de tout */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-button:hover {
+    background: linear-gradient(135deg, #3a5985, #2a4765);
+    transform: translateX(-3px) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.back-button:active {
+    transform: translateX(-1px) translateY(0);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Pour mobile */
+@media (max-width: 768px) {
+    .back-button {
+        top: 15px;
+        left: 15px;
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+    
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+    
+    .back-to-top {
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+/* Si vous voulez le bouton dans la navigation */
+nav .back-button {
+    position: static;
+    margin: 10px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

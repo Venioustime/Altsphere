@@ -1,5 +1,65 @@
-// volets-images.js
+// volets-images.js - VERSION AVEC SCROLL CORRIGÉ
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // Fonction pour convertir TOUS les formats de timecode en secondes
+    function timecodeToSeconds(timecode) {
+        // Nettoyer le timecode
+        const cleanTimecode = timecode
+            .replace(' et ensemble de la vidéo', '')
+            .replace('h', ':')
+            .replace('min', ':')
+            .replace('s', '')
+            .trim();
+        
+        // Format "hh:mm:ss" (comme 02:08:27)
+        const hmsMatch = cleanTimecode.match(/(\d+):(\d+):(\d+)/);
+        if (hmsMatch) {
+            const hours = parseInt(hmsMatch[1]) || 0;
+            const minutes = parseInt(hmsMatch[2]) || 0;
+            const seconds = parseInt(hmsMatch[3]) || 0;
+            return (hours * 3600) + (minutes * 60) + seconds;
+        }
+        
+        // Format "mm:ss" (comme 08:27)
+        const msMatch = cleanTimecode.match(/(\d+):(\d+)/);
+        if (msMatch) {
+            const minutes = parseInt(msMatch[1]) || 0;
+            const seconds = parseInt(msMatch[2]) || 0;
+            return (minutes * 60) + seconds;
+        }
+        
+        // Ancien format "min" et "s" (comme 01min46s)
+        const minsecMatch = cleanTimecode.match(/(\d+)min(\d+)s/);
+        if (minsecMatch) {
+            const minutes = parseInt(minsecMatch[1]) || 0;
+            const seconds = parseInt(minsecMatch[2]) || 0;
+            return (minutes * 60) + seconds;
+        }
+        
+        // Si c'est "cover" ou contient "cover"
+        if (timecode.toLowerCase().includes('cover')) {
+            return 0;
+        }
+        
+        // Si aucun format ne correspond
+        console.warn('Format de timecode non reconnu:', timecode);
+        return 99999; // Mettre à la fin
+    }
+    
+    // Fonction pour faire défiler jusqu'à un élément
+    function scrollToElement(element) {
+        // Calculer la position après que tous les changements de DOM soient terminés
+        setTimeout(() => {
+            const headerOffset = 100; // Ajustez cette valeur selon la hauteur de votre en-tête
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }, 300); // Délai pour laisser le temps au volet précédent de se fermer
+    }
     
     // ÉTAPE 1 : Récupérer TOUTES les images du tableau caché
     function getAllImages() {
@@ -9,60 +69,64 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = sourceTable.querySelectorAll('tr');
         const images = [];
         
-        rows.forEach(row => {
+        rows.forEach((row, index) => {
+            // Sauter la ligne d'en-tête (première ligne <tr> dans tbody)
+            if (index === 0 && row.parentElement.tagName === 'THEAD') return;
+            
             const cells = row.querySelectorAll('td');
+            // Prendre les 3 premières cellules (Image, Timecode, Cartel)
             if (cells.length >= 3) {
                 const imgElement = cells[0].querySelector('img');
                 const timecode = cells[1].textContent.trim();
                 const caption = cells[2].textContent.trim();
                 
                 if (imgElement) {
-                    // Convertir le timecode en secondes pour faciliter le tri
-                    let seconds = 0;
-                    if (timecode === 'cover') {
-                        seconds = 0;
-                    } else {
-                        const match = timecode.match(/(\d+)min(\d+)s/);
-                        if (match) {
-                            seconds = parseInt(match[1]) * 60 + parseInt(match[2]);
-                        }
-                    }
+                    const seconds = timecodeToSeconds(timecode);
                     
                     images.push({
                         src: imgElement.src,
                         timecode: timecode,
                         seconds: seconds,
                         caption: caption,
-                        html: row.outerHTML // Garder le HTML original
+                        html: row.outerHTML
                     });
                 }
             }
         });
         
-        return images;
+        // Trier par timecode (secondes)
+        return images.sort((a, b) => a.seconds - b.seconds);
+    }
+    
+    // Fonction pour fermer un volet et attendre la fin de l'animation
+    function closeVoletAndWait(volet) {
+        return new Promise((resolve) => {
+            volet.classList.remove('open');
+            const content = volet.querySelector('.volet-content');
+            content.style.maxHeight = null;
+            
+            // Attendre la fin de la transition (0.6s dans votre CSS)
+            setTimeout(resolve, 600);
+        });
     }
     
     // ÉTAPE 2 : Fonction pour ouvrir/fermer un volet
-    function toggleVolet(volet) {
+    async function toggleVolet(volet, scrollToVolet = true) {
         const isOpen = volet.classList.contains('open');
         const content = volet.querySelector('.volet-content');
-        const arrow = volet.querySelector('.volet-arrow');
-        
-        // Fermer tous les autres volets (optionnel)
-        // Si vous voulez que plusieurs puissent rester ouverts, enlevez ces 3 lignes
-        document.querySelectorAll('.image-volet.open').forEach(openVolet => {
-            if (openVolet !== volet) {
-                openVolet.classList.remove('open');
-                openVolet.querySelector('.volet-content').style.maxHeight = null;
-            }
-        });
         
         if (isOpen) {
             // Fermer ce volet
             volet.classList.remove('open');
             content.style.maxHeight = null;
         } else {
-            // Ouvrir ce volet
+            // Fermer d'abord tous les autres volets et attendre
+            const openVolets = Array.from(document.querySelectorAll('.image-volet.open')).filter(v => v !== volet);
+            
+            // Fermer tous les volets ouverts en parallèle
+            await Promise.all(openVolets.map(closeVoletAndWait));
+            
+            // Maintenant ouvrir le nouveau volet
             volet.classList.add('open');
             
             // Charger les images si c'est la première fois
@@ -72,14 +136,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Ajuster la hauteur
-            content.style.maxHeight = content.scrollHeight + "px";
+            setTimeout(() => {
+                content.style.maxHeight = content.scrollHeight + "px";
+                
+                // Défilement automatique vers le volet (sauf pour le premier chargement)
+                if (scrollToVolet) {
+                    scrollToElement(volet);
+                }
+            }, 50);
         }
     }
     
     // ÉTAPE 3 : Charger les images dans un volet
     function loadImagesIntoVolet(volet) {
         const startTime = parseInt(volet.dataset.timeStart) || 0;
-        const endTime = parseInt(volet.dataset.timeEnd) || 9999;
+        const endTime = parseInt(volet.dataset.timeEnd) || 99999;
         const content = volet.querySelector('.volet-content');
         const allImages = getAllImages();
         
@@ -88,9 +159,16 @@ document.addEventListener('DOMContentLoaded', function() {
             return img.seconds >= startTime && img.seconds < endTime;
         });
         
-        // Mettre à jour le compteur
-        const countElement = volet.querySelector('.volet-count');
-        if (countElement) {
+        // Ajouter ou mettre à jour le compteur
+        let countElement = volet.querySelector('.volet-count');
+        if (!countElement) {
+            const titleElement = volet.querySelector('.volet-title');
+            if (titleElement) {
+                titleElement.insertAdjacentHTML('afterend', 
+                    `<span class="volet-count">(${filteredImages.length} images)</span>`);
+                countElement = volet.querySelector('.volet-count');
+            }
+        } else {
             countElement.textContent = `(${filteredImages.length} images)`;
         }
         
@@ -129,21 +207,46 @@ document.addEventListener('DOMContentLoaded', function() {
     function initVolets() {
         const volets = document.querySelectorAll('.image-volet');
         
-        volets.forEach(volet => {
+        volets.forEach((volet, index) => {
             const header = volet.querySelector('.volet-header');
             
             // Ajouter l'événement click
-            header.addEventListener('click', () => {
-                toggleVolet(volet);
+            header.addEventListener('click', async () => {
+                // Pour le premier volet au chargement, ne pas scroller
+                const shouldScroll = !(index === 0 && !volet.dataset.loaded);
+                await toggleVolet(volet, shouldScroll);
             });
             
-            // Option : ouvrir le premier volet automatiquement
-            if (volet === volets[0]) {
-                setTimeout(() => {
-                    toggleVolet(volet);
-                }, 500);
-            }
+            // Pré-calculer et afficher le nombre d'images pour chaque volet
+            setTimeout(() => {
+                const allImages = getAllImages();
+                const startTime = parseInt(volet.dataset.timeStart) || 0;
+                const endTime = parseInt(volet.dataset.timeEnd) || 99999;
+                
+                const count = allImages.filter(img => 
+                    img.seconds >= startTime && img.seconds < endTime
+                ).length;
+                
+                // Ajouter ou mettre à jour le compteur
+                let countElement = volet.querySelector('.volet-count');
+                if (!countElement) {
+                    const titleElement = volet.querySelector('.volet-title');
+                    if (titleElement) {
+                        titleElement.insertAdjacentHTML('afterend', 
+                            `<span class="volet-count">(${count} images)</span>`);
+                    }
+                } else {
+                    countElement.textContent = `(${count} images)`;
+                }
+            }, 100);
         });
+        
+        // Ouvrir le premier volet automatiquement (sans scroll)
+        if (volets[0]) {
+            setTimeout(() => {
+                toggleVolet(volets[0], false); // false = pas de scroll
+            }, 200);
+        }
     }
     
     // Démarrer tout
