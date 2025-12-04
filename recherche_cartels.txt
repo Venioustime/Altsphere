@@ -1,0 +1,24 @@
+RECHERCHE DU TERME : 'otto'
+================================================================================
+
+Nombre total d'occurrences trouvées : 4
+
+
+FICHIER: 10_artistes_tabous.html
+--------------------------------------------------------------------------------
+1. Timecode: 08min11s
+   Image: .\images\sources\10_artistes_tabous\08_11.png
+   Cartel: **OTTO** Muehl a Trieste - 1978 - Foto Mario Sillani
+
+2. Timecode: 08min27s
+   Image: .\images\sources\10_artistes_tabous\08_27.png
+   Cartel: **OTTO** Muehl a Trieste - 1978 - Foto Mario Sillani
+
+3. Timecode: 08min34s
+   Image: .\images\sources\10_artistes_tabous\08_34.png
+   Cartel: Gerümpelplastiken d'**OTTO** Muehl
+
+4. Timecode: 08min47s
+   Image: .\images\sources\10_artistes_tabous\08_47.png
+   Cartel: Action: Military Training (1967) d'**OTTO** Muehl
+
