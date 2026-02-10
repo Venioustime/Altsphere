@@ -82,8 +82,32 @@ ul {
 }
 
 .video-details {
-    display: inline-block;
-    position: relative;
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.video-details .video-thumbnail {
+    max-width: 100%;
+    margin: 0 auto 30px auto;
+}
+
+.video-details .video-thumbnail img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.video-details .info {
+    margin-top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 25px;
+    border-radius: 8px;
+    width: 100%;
 }
 
 /* Nouvelle classe ajoutée pour l'encadré des détails */
