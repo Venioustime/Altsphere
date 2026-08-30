@@ -91,15 +91,18 @@ ul {
 .video-details .video-thumbnail {
     max-width: 100%;
     margin: 0 auto 30px auto;
+    height: auto;          /* ← Essentiel pour annuler le 100px global */
+    /* Supprimez max-height, display:flex, align-items, justify-content, background-color */
+    /* On laisse le flux normal */
 }
 
 .video-details .video-thumbnail img {
-    width: 100%;
+    display: block;
+    max-width: 100%;          /* ← ne dépasse pas la largeur naturelle */
     height: auto;
-    max-height: 450px;
-    object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;           /* ← centre l’image si elle est plus petite que le conteneur */
 }
 
 .video-details .info {
@@ -108,6 +111,7 @@ ul {
     padding: 25px;
     border-radius: 8px;
     width: 100%;
+    clear: both;              /* Sécurité : force le texte en dessous */
 }
 
 /* Nouvelle classe ajoutée pour l'encadré des détails */
@@ -157,9 +161,6 @@ ul {
     border-collapse: collapse;
 }
 
-.info {
-    margin-top: 120px;
-}
 
 /* Style de base pour les volets */
 .image-volet {
@@ -509,4 +510,69 @@ nav .back-button {
     margin: 10px;
     display: inline-block;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.category-card {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    padding: 35px 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px); /* petit effet de flou, optionnel */
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.category-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid rgba(255,255,255,0.2);
+}
+
+.category-card h3 {
+    color: white;
+    font-size: 1.4em;
+    margin: 10px 0 5px;
+}
+
+.category-card p {
+    color: #ccc;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.category-card a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: color 0.3s ease;
+}
+
+.category-card a:hover {
+    color: #aaccff; /* petite couleur d'accent au survol, vous pouvez changer */
+}
+
+/* Pour le symbole ∞, on peut l'agrandir un peu */
+.category-card:first-child a {
+    font-size: 2.5rem;
 }
