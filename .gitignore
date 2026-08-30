@@ -1,0 +1,5 @@
+images/sources/
+*.bak
+imgbb.txt
+remplacer_liens.py
+*.pyc
