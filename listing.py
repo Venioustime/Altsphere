@@ -54,7 +54,7 @@ def generate_image_list_txt(directory_path, output_file):
                 f.write(line + "\n")
 
 # Exemple d'utilisation
-directory = './images/sources/all_seeing_eye_video'
+directory = './images/sources/art_soustraction'
 output_file = 'output_table.txt'
 
 generate_image_list_txt(directory, output_file)
