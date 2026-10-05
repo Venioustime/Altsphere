@@ -196,6 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Insérer le tableau
         content.innerHTML = tableHTML;
+
+        // Transformer les data-src en src uniquement maintenant
+        content.querySelectorAll('img[data-src]').forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            img.loading = 'lazy';   // Active le lazy loading natif
+        });
         
         // Ajouter du lazy loading à toutes les images
         content.querySelectorAll('img').forEach(img => {
